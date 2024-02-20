@@ -11,6 +11,7 @@ export default function App() {
     fetch("https://opentdb.com/api.php?amount=5")
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setQuestions(
           data.results.map((question) => ({
             key: nanoid(),
@@ -19,9 +20,10 @@ export default function App() {
               question.correct_answer,
               ...question.incorrect_answers,
             ],
+            correct_answer: question.correct_answer,
           }))
         );
-        console.log(data);
+        // console.log(data);
       });
   }, []);
 
@@ -43,15 +45,17 @@ export default function App() {
         key={question.key}
         question={he.decode(question.question)}
         allAnswers={mixDecodeAnswers(question.allAnswers)}
+        correctAnswer={he.decode(question.correct_answer)}
       />
     );
   });
 
-  console.log(questions);
+  // console.log(questions);
 
   return (
     <>
       <div className="quizz-container">{questionElements}</div>
+      <button>Check Answers</button>
     </>
   );
 }
