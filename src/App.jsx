@@ -14,10 +14,10 @@ export default function App() {
   const [count, setCount] = useState(0);
   // to show the score and trigger the conditional rendering
   const [showScore, setShowScore] = useState(false);
-
   const [checkResults, setCheckResults] = useState(false);
   const [showRemainingQuestions, setShowRemainingQuestions] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [newGame, setNewGame] = useState(false);
 
   // Fetching the questions from the API
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function App() {
   );
 
   // Starting new game
-  function newGame() {
+  function startNewGame() {
     setCheckResults(false);
     setCount(0);
     setShowScore(false);
@@ -124,22 +124,27 @@ export default function App() {
         <button
           className="check-answers"
           onClick={() => {
-            if (answeredQuestions.length === 5) {
-              setCheckResults(true);
-              setShowScore(true);
-              setShowRemainingQuestions(false);
-              if (count === 5) {
-                setShowConfetti(true);
-              }
+            if (newGame) {
+              startNewGame();
+              setNewGame(false); // Reset newGame state after starting a new game
             } else {
-              setShowRemainingQuestions(true);
+              if (answeredQuestions.length === 5) {
+                setCheckResults(true);
+                setShowScore(true);
+                setShowRemainingQuestions(false);
+                if (count === 5) {
+                  setShowConfetti(true);
+                }
+                setNewGame(true); // Set newGame to true after showing scores and confetti
+              } else {
+                setShowRemainingQuestions(true);
+              }
             }
             console.log(questions);
-            console.log(checkResults);
           }}
         >
-          Check Answers
           {showConfetti ? <Confetti /> : ""}
+          {newGame ? "Start a new game" : "Check answers"}
         </button>
       </div>
     </>
