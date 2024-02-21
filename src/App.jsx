@@ -4,6 +4,7 @@ import he from "he";
 import Question from "./Question";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
+import Intro from "./Intro";
 // import "./App.css";
 
 export default function App() {
@@ -14,10 +15,13 @@ export default function App() {
   const [count, setCount] = useState(0);
   // to show the score and trigger the conditional rendering
   const [showScore, setShowScore] = useState(false);
+
   const [checkResults, setCheckResults] = useState(false);
   const [showRemainingQuestions, setShowRemainingQuestions] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [newGame, setNewGame] = useState(false);
+
+  const [intro, setIntro] = useState(true);
 
   // Fetching the questions from the API
   useEffect(() => {
@@ -112,41 +116,43 @@ export default function App() {
   }
 
   return (
-    <>
-      <div className="quizz-container">{questionElements}</div>
-      <div className="score-container">
-        {showScore ? <h3>You scored {count}/5 correct answers</h3> : ""}
-        {showRemainingQuestions ? (
-          <h3 className="remaining-questions">Please answer all questions</h3>
-        ) : (
-          ""
-        )}
-        <button
-          className="check-answers"
-          onClick={() => {
-            if (newGame) {
-              startNewGame();
-              setNewGame(false); // Reset newGame state after starting a new game
-            } else {
-              if (answeredQuestions.length === 5) {
-                setCheckResults(true);
-                setShowScore(true);
-                setShowRemainingQuestions(false);
-                if (count === 5) {
-                  setShowConfetti(true);
+    <div className="App">
+      {intro ? (
+        <Intro setIntro={setIntro} />
+      ) : (
+        <>
+          <div className="quizz-container">{questionElements}</div>
+          <div className="score-container">
+            {showScore ? <h3>You scored {count}/5 correct answers</h3> : ""}
+            {showRemainingQuestions ? (
+              <h3 className="remaining-questions">
+                Please answer all questions
+              </h3>
+            ) : (
+              ""
+            )}
+            <button
+              className="check-answers"
+              onClick={() => {
+                if (answeredQuestions.length === 5) {
+                  setCheckResults(true);
+                  setShowScore(true);
+                  setShowRemainingQuestions(false);
+                  if (count === 5) {
+                    setShowConfetti(true);
+                  }
+                  setNewGame(true); // Set newGame to true after checking answers
+                } else {
+                  setShowRemainingQuestions(true);
                 }
-                setNewGame(true); // Set newGame to true after showing scores and confetti
-              } else {
-                setShowRemainingQuestions(true);
-              }
-            }
-            console.log(questions);
-          }}
-        >
-          {showConfetti ? <Confetti /> : ""}
-          {newGame ? "Start a new game" : "Check answers"}
-        </button>
-      </div>
-    </>
+              }}
+            >
+              {newGame ? "Start a new game" : "Check answers"}
+            </button>
+            {showConfetti && <Confetti />}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
