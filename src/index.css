@@ -2,14 +2,18 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
 }
+
+/* :root {
+  height: 100vh;
+} */
 
 html {
   font-family: "Inter", sans-serif;
   background-color: #F5F7FB;
   max-width: 500px;
   margin: 0 auto;
+  height: 100vh;
 }
 
 .intro-container {
@@ -69,6 +73,12 @@ h1 {
   margin: 1rem 0.5rem;
 }
 
+.each-answer.selected {
+  background-color: #4D5B9E;
+  color: #F5F7FB;
+  border: none;
+}
+
 input[type=radio]{
   width: 0;
   opacity: 0;
@@ -79,7 +89,7 @@ label {
   padding: 0.5rem 2rem;
 }
 
-input[type="radio"]:checked + label{
+.each-answer.selected{
   background-color: #4D5B9E;
   color: #F5F7FB;
   cursor: pointer;
@@ -92,4 +102,41 @@ label:hover{
 
 .quizz-container {
   margin: 2em 0.5em;
+}
+
+.check-answers {
+  background-color: #4D5B9E;
+  border-radius: 10px;
+  padding: 1em 2em;
+  font-size: 1.2rem;
+  border: none;
+  color: #F5F7FB;
+}
+
+.each-answer.picked {
+  background-color: #94D7A2 ;
+  color: #293264;
+  border: none; /* or any color for picked answers */
+}
+
+.each-answer.correct {
+  background-color: #F8BCBC;
+  color: #293264;
+  border: none; /* or any color for correct answers */
+}
+
+.score-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* margin-bottom: 2em; */
+  /* height: 100vh;
+  padding: 0 20px;
+  text-align: center; */
+}
+
+.remaining-questions{
+  color: red;
+  margin-right: 1rem;
 }
